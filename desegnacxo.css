@@ -1,0 +1,17 @@
+img {
+    float: left;
+    padding-right: 3em;
+}
+
+ol {
+    font-size: large;
+}
+
+.navigation {
+    text-align: center;
+    clear: both;
+}
+
+a {
+    text-decoration: none;
+}
