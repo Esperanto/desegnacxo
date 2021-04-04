@@ -19,6 +19,7 @@ import re
 from PIL import Image
 import PIL.ImageOps
 import shutil
+import hashlib
 
 DRAWING_SIZE = (450, 470)
 TITLE_HEIGHT = 52
@@ -209,6 +210,11 @@ for fn in glob.glob('desegnajxoj/*.txt'):
     card = load_card(fn)
     card.generate_image(image_fn, len(cards))
     cards.append(card)
+
+# Sort the cards in a consistent but unpredictable order so that
+# stepping through them one by one seems random but the order will
+# always be the same between invocations of the script
+cards.sort(key=lambda c: hashlib.sha256(c.title.encode('utf-8')).digest())
 
 for card_num, card in enumerate(cards):
     with open("retejo/{:03d}.html".format(card_num),
