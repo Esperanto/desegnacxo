@@ -62,6 +62,20 @@ def fit_size(w, h):
 
     return out_w, out_h
 
+def apply_orientation(im, orientation):
+    if orientation == 1:
+        return im
+    elif orientation == 3:
+        rotation = 180
+    elif orientation == 6:
+        rotation = 90
+    elif orientation == 8:
+        rotation = 270
+    else:
+        raise Exception("Unknown orientation {}".format(orientation))
+
+    return im.rotate(360 - rotation, expand=True)
+
 class Card(collections.namedtuple('Card', ['title', 'features'])):
     def _load_svg(self, cr, image_fn):
         svg = Rsvg.Handle.new_from_file(image_fn)
@@ -78,8 +92,9 @@ class Card(collections.namedtuple('Card', ['title', 'features'])):
 
     def _load_image(self, cr, image_fn):
         with Image.open(image_fn) as im:
-            im.info["exif"] = im.getexif()
-            im = PIL.ImageOps.exif_transpose(im)
+            exif = im.getexif()
+            if 274 in exif:
+                im = apply_orientation(im, exif[274])
             w, h = fit_size(im.width, im.height)
             scaled_im = im.resize((w, h))
 
