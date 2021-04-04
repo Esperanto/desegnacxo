@@ -208,7 +208,7 @@ for fn in glob.glob('desegnajxoj/*.txt'):
         continue
 
     card = load_card(fn)
-    card.generate_image(image_fn, len(cards))
+    card.image_fn = image_fn
     cards.append(card)
 
 # Sort the cards in a consistent but unpredictable order so that
@@ -217,6 +217,8 @@ for fn in glob.glob('desegnajxoj/*.txt'):
 cards.sort(key=lambda c: hashlib.sha256(c.title.encode('utf-8')).digest())
 
 for card_num, card in enumerate(cards):
+    card.generate_image(card.image_fn, card_num)
+
     with open("retejo/{:03d}.html".format(card_num),
               'wt', encoding='utf-8') as f:
         if len(card.features) != 10:
