@@ -223,10 +223,9 @@ for card_num, card in enumerate(cards):
               'wt', encoding='utf-8') as f:
         if len(card.features) != 10:
             print("warning: the card “{:03d}: {:s}” "
-                  "has {:d} features in {:s}".
+                  "has {:d} features".
                   format(card_num, card.title,
-                         len(card.features),
-                         language),
+                         len(card.features)),
                   file=sys.stderr)
         feature_list = "\n".join("<li>{}".format(html.escape(feature))
                                  for feature in card.features)
